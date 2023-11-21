@@ -1,4 +1,4 @@
-package com.example.pruebatecnicabolsiyo.model
+package com.example.pruebatecnicabolsiyo.core.model
 
 data class CharactersAttributes(
     var id: Int,

@@ -1,4 +1,4 @@
-package com.example.pruebatecnicabolsiyo
+package com.example.pruebatecnicabolsiyo.domain
 
 object Constans {
 

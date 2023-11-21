@@ -1,7 +1,7 @@
 package com.example.pruebatecnicabolsiyo.core.data
 
-import com.example.pruebatecnicabolsiyo.Constans
-import com.example.pruebatecnicabolsiyo.model.CharacterAttributes
+import com.example.pruebatecnicabolsiyo.domain.Constans
+import com.example.pruebatecnicabolsiyo.core.model.CharacterAttributes
 import retrofit2.Response
 import retrofit2.http.GET
 

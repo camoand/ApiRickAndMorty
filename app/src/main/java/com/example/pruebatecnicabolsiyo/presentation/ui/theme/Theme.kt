@@ -1,4 +1,4 @@
-package com.example.pruebatecnicabolsiyo.ui.theme
+package com.example.pruebatecnicabolsiyo.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

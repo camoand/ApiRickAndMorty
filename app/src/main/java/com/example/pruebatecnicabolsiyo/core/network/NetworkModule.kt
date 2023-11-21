@@ -1,6 +1,6 @@
 package com.example.pruebatecnicabolsiyo.core.network
 
-import com.example.pruebatecnicabolsiyo.Constans
+import com.example.pruebatecnicabolsiyo.domain.Constans
 import com.example.pruebatecnicabolsiyo.core.data.ApiClient
 import dagger.Module
 import dagger.Provides

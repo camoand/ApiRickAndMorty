@@ -1,3 +1,3 @@
-package com.example.pruebatecnicabolsiyo.model
+package com.example.pruebatecnicabolsiyo.core.model
 
 data class AttributeLocation(var name: String, var url: String)

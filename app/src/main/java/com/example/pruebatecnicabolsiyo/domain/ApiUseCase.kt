@@ -1,7 +1,7 @@
 package com.example.pruebatecnicabolsiyo.domain
 
 import com.example.pruebatecnicabolsiyo.core.ApiRepository
-import com.example.pruebatecnicabolsiyo.model.CharacterAttributes
+import com.example.pruebatecnicabolsiyo.core.model.CharacterAttributes
 import javax.inject.Inject
 
 class ApiUseCase @Inject constructor(private val repository: ApiRepository){

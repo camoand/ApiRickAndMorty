@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".PruebaTecnicaBolsiyoApp"
+        android:name=".presentation.viewmodel.PruebaTecnicaBolsiyoApp"
         android:theme="@style/Theme.PruebaTecnicaBolsiyo"
         tools:targetApi="31">
         <activity
