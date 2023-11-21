@@ -1,7 +1,7 @@
 package com.example.pruebatecnicabolsiyo.core.network
 
 import com.example.pruebatecnicabolsiyo.domain.Constans
-import com.example.pruebatecnicabolsiyo.core.data.ApiClient
+import com.example.pruebatecnicabolsiyo.core.data.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,8 +25,8 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideaApiClient(retrofit: Retrofit): ApiClient{
-       return retrofit.create(ApiClient::class.java)
+    fun provideaApiClient(retrofit: Retrofit): ApiService{
+       return retrofit.create(ApiService::class.java)
     }
 
 }

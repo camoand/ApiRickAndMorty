@@ -1,19 +1,18 @@
 package com.example.pruebatecnicabolsiyo.core
 
-import com.example.pruebatecnicabolsiyo.core.data.ApiClient
-import com.example.pruebatecnicabolsiyo.core.model.CharacterAttributes
+import com.example.pruebatecnicabolsiyo.core.data.ApiService
+import com.example.pruebatecnicabolsiyo.core.model.Characters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
 import javax.inject.Inject
 
-class GetServiceApi @Inject constructor(private val apiClient: ApiClient) {
+class GetServiceApi @Inject constructor(private val apiService: ApiService) {
 
-    suspend fun getApi(): CharacterAttributes {
+/*    suspend fun getApi(): Characters {
         return withContext(Dispatchers.IO){
-            val response = apiClient.get()
+            val response = apiService.getCharacters()
             response.body() ?: response.isSuccessful;
-        } as CharacterAttributes
-    }
+        } as Characters
+    }*/
 
 }
