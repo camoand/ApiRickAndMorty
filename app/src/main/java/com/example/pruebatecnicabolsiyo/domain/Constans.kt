@@ -6,5 +6,4 @@ object Constans {
 
    const val CHARACTER = "character"
 
-
 }
