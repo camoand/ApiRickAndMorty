@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFrom
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberTopAppBarState
@@ -46,10 +48,9 @@ import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
 fun TopAppBarScreen(apiViewModel: ApiViewModel) {
     Scaffold(
         topBar = {
-            TopAppBar(/*colors = topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
-            ),*/ title = { Text(text = "Api Rick and Morty") }, actions = {
+            TopAppBar(colors = TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = Color.Blue
+            ), title = { Text(text = "Api Rick and Morty") }, actions = {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(imageVector = Icons.Filled.Close, contentDescription = "Close")
                 }
@@ -58,7 +59,7 @@ fun TopAppBarScreen(apiViewModel: ApiViewModel) {
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding).padding(bottom = 8.dp)
         ) {
             PrincipalView(apiViewModel = apiViewModel)
         }
@@ -90,6 +91,7 @@ fun PrincipalView(apiViewModel: ApiViewModel) {
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
+
                 content = {
                     items(charactersStates.character!!.results.size) {
                         ItemCharacter(
