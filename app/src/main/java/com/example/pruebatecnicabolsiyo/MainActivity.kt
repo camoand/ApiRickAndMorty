@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.pruebatecnicabolsiyo.core.model.Routes
 import com.example.pruebatecnicabolsiyo.presentation.ui.TopAppBarScreen
+import com.example.pruebatecnicabolsiyo.presentation.ui.ViewDetailsCharacter
 import com.example.pruebatecnicabolsiyo.presentation.ui.theme.PruebaTecnicaBolsiyoTheme
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,8 +24,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PruebaTecnicaBolsiyoTheme {
-
-                    TopAppBarScreen(apiViewModel = apiViewModel)
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = Routes.Pantalla1.routes) {
+                    composable(Routes.Pantalla1.routes) {
+                        TopAppBarScreen(apiViewModel = apiViewModel, navController = navController)
+                    }
+                    composable(
+                        Routes.Pantalla2.routes,
+                        arguments = listOf(navArgument("id") { type = NavType.IntType })
+                    ) {backStackEntry ->
+                        ViewDetailsCharacter(apiViewModel = apiViewModel, navController,backStackEntry.arguments!!.getInt("id"))
+                    }
+                }
             }
         }
     }
