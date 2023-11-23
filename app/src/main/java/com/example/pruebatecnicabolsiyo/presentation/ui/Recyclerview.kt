@@ -70,8 +70,7 @@ fun ContentPrincipalView(apiViewModel: ApiViewModel, navController: NavHostContr
             verticalArrangement = Arrangement.Center,
 
             ) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(120.dp),
+            LazyVerticalGrid(columns = GridCells.Adaptive(120.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
 
@@ -99,35 +98,30 @@ fun ContentPrincipalView(apiViewModel: ApiViewModel, navController: NavHostContr
 @Composable
 fun ItemCharacter(name: String, urlImage: String, position: Int, navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Card(border = BorderStroke(2.dp, Color.Red),
-            shape = MaterialTheme.shapes.medium,
-            modifier = Modifier
-                .clickable {
-                    navController.navigate(Routes.Pantalla2.createRoute(position)) {
-                        popUpTo(
-                            Routes.Pantalla2.createRoute(
-                                position
-                            )
-                        ) {
-                            inclusive = false
-                        }
+        Card(shape = MaterialTheme.shapes.medium, modifier = Modifier
+            .clickable {
+                navController.navigate(Routes.Pantalla2.createRoute(position)) {
+                    popUpTo(
+                        Routes.Pantalla2.createRoute(
+                            position
+                        )
+                    ) {
+                        inclusive = false
                     }
                 }
-                .height(200.dp)
-                .width(200.dp)
-        ) {
+            }
+            .height(200.dp)
+            .width(200.dp)) {
             AsyncImage(
                 model = urlImage,
                 contentDescription = "photoCharacter",
                 contentScale = ContentScale.FillHeight,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             )
         }
         Spacer(modifier = Modifier.padding(4.dp))
         Text(
-            text = name,
-            textAlign = TextAlign.Center
+            text = name, textAlign = TextAlign.Center
         )
     }
 }
