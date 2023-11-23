@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -69,11 +70,31 @@ fun ContentPrincipalView(apiViewModel: ApiViewModel, navController: NavHostContr
         }
 
     } else {
-        Text(text = "Error: ${charactersStates.error}")
+        FetchCharacterButton(apiViewModel)
     }
 
     LaunchedEffect(false) {
         apiViewModel.processIntent(CharacterIntent.FetchCharacter)
+    }
+}
+
+
+@Composable
+fun FetchCharacterButton(apiViewModel: ApiViewModel) {
+    val charactersStates by apiViewModel.state.collectAsState()
+
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = "Error: " + charactersStates.error, textAlign = TextAlign.Center)
+        Spacer(modifier = Modifier.padding(8.dp))
+        Button(onClick = { apiViewModel.processIntent(CharacterIntent.FetchCharacter) }) {
+            Text(text = "Volver a cargar")
+        }
     }
 }
 
