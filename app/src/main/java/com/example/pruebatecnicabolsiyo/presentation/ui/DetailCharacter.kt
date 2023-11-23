@@ -69,7 +69,7 @@ fun ViewDetailsCharacter(apiViewModel: ApiViewModel, navController: NavHostContr
                         }
                     }
             )
-            Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(5.dp))
             Card(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
@@ -91,7 +91,7 @@ fun ViewDetailsCharacter(apiViewModel: ApiViewModel, navController: NavHostContr
                 fontFamily = FontFamily.Monospace,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(5.dp))
             Column(
                 Modifier
                     .fillMaxSize()
