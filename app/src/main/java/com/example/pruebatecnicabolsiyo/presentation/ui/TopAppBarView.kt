@@ -20,6 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.pruebatecnicabolsiyo.core.model.Routes
+import com.example.pruebatecnicabolsiyo.core.model.Routes.*
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,7 +55,15 @@ fun TopAppBarScreen(apiViewModel: ApiViewModel) {
                 .padding(innerPadding)
                 .padding(bottom = 8.dp)
         ) {
-            ContentPrincipalView(apiViewModel = apiViewModel)
+            val navController = rememberNavController()
+            NavHost(navController = navController, startDestination = Pantalla1.routes){
+                composable(Pantalla1.routes) {
+                    ContentPrincipalView(apiViewModel = apiViewModel, navController)
+                }
+                composable(Pantalla2.routes) {
+                    ViewDetailsCharacter(navController)
+                }
+            }
         }
 
     }

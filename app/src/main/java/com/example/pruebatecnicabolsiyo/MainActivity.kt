@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PruebaTecnicaBolsiyoTheme {
+
                     TopAppBarScreen(apiViewModel = apiViewModel)
             }
         }
