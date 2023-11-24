@@ -6,5 +6,6 @@ object Constans {
 
    const val CHARACTER = "character"
    const val ERROR_MESSAGE = "Error al acceder al recurso"
+   const val ID = "id"
 
 }

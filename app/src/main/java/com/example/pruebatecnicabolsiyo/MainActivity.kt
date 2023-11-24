@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.pruebatecnicabolsiyo.core.model.Routes
+import com.example.pruebatecnicabolsiyo.domain.Constans
 import com.example.pruebatecnicabolsiyo.presentation.ui.TopAppBarScreen
 import com.example.pruebatecnicabolsiyo.presentation.ui.ViewDetailsCharacter
 import com.example.pruebatecnicabolsiyo.presentation.ui.theme.PruebaTecnicaBolsiyoTheme
@@ -31,9 +32,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(
                         Routes.Pantalla2.routes,
-                        arguments = listOf(navArgument("id") { type = NavType.IntType })
+                        arguments = listOf(navArgument(Constans.ID) { type = NavType.IntType })
                     ) {backStackEntry ->
-                        ViewDetailsCharacter(apiViewModel = apiViewModel, navController,backStackEntry.arguments!!.getInt("id"))
+                        ViewDetailsCharacter(apiViewModel = apiViewModel, navController,backStackEntry.arguments?.getInt(Constans.ID) ?: 0)
                     }
                 }
             }
