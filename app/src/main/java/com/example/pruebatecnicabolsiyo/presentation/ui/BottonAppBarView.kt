@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.pruebatecnicabolsiyo.domain.Constans
 import com.example.pruebatecnicabolsiyo.presentation.intent.CharacterIntent
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
 
@@ -29,12 +30,13 @@ fun NavigationBar(apiViewModel: ApiViewModel) {
     var enableButtonNext = false
     var enableButtonAfter = false
 
-    if (characterState.character != null) {
-        if (characterState.character!!.info.next != null) {
-            enableButtonNext = true
-        }
-        if (characterState.character!!.info.prev != null) {
-            enableButtonAfter = true
+
+    with(characterState.character) {
+        if (this != null) {
+            if (this.info.next != null)
+                enableButtonNext = true
+            if (this.info.prev != null)
+                enableButtonAfter = true
         }
     }
 
@@ -49,7 +51,7 @@ fun NavigationBar(apiViewModel: ApiViewModel) {
                 onClick = {
                     apiViewModel.processIntent(
                         CharacterIntent.NavigateToNextPage(
-                            characterState.character!!.info.prev
+                            characterState.character?.info?.prev ?: ""
                         )
                     )
                 },
@@ -62,18 +64,22 @@ fun NavigationBar(apiViewModel: ApiViewModel) {
                 Row {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,
-                        contentDescription = "Close",
+                        contentDescription = "icon_previous",
                         tint = Color.Black
                     )
                     Text(
-                        text = "Pagina anterior", modifier = Modifier
+                        text = Constans.PREVIOUS_PAGE, modifier = Modifier
                             .align(Alignment.CenterVertically)
                     )
                 }
             }
             IconButton(
                 onClick = {
-                    apiViewModel.processIntent(CharacterIntent.NavigateToNextPage(characterState.character!!.info.next))
+                    apiViewModel.processIntent(
+                        CharacterIntent.NavigateToNextPage(
+                            characterState.character?.info?.next ?: ""
+                        )
+                    )
                 },
                 Modifier
                     .fillMaxWidth()
@@ -83,12 +89,12 @@ fun NavigationBar(apiViewModel: ApiViewModel) {
             ) {
                 Row {
                     Text(
-                        text = "Siguiente pagina", modifier = Modifier
+                        text = Constans.NEXT_PAGE, modifier = Modifier
                             .align(Alignment.CenterVertically)
                     )
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowRight,
-                        contentDescription = "Close",
+                        contentDescription = "icon_next",
                         tint = Color.Black
                     )
                 }

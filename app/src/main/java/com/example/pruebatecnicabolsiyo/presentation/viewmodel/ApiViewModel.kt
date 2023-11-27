@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pruebatecnicabolsiyo.domain.ApiNextPageUseCase
 import com.example.pruebatecnicabolsiyo.domain.ApiUseCase
+import com.example.pruebatecnicabolsiyo.domain.Constans
 import com.example.pruebatecnicabolsiyo.domain.state.ApiState
 import com.example.pruebatecnicabolsiyo.presentation.intent.CharacterIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,10 +33,10 @@ class ApiViewModel @Inject constructor(private val apiUseCase: ApiUseCase,privat
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
             try {
-                val character = apiNextPageUseCase.invoke(urlPage.substring(47))
+                val character = apiNextPageUseCase.invoke(urlPage)
                 _state.value = _state.value.copy(character = character, isLoading = false)
             } catch (e: Exception) {
-                _state.value = _state.value.copy(error = e.message ?: "Unknown error", isLoading = false)
+                _state.value = _state.value.copy(error = e.message ?: Constans.UNKNOWN_ERROR, isLoading = false)
             }
         }
     }
@@ -47,7 +48,7 @@ class ApiViewModel @Inject constructor(private val apiUseCase: ApiUseCase,privat
                 val character = apiUseCase.invoke()
                 _state.value = _state.value.copy(character = character, isLoading = false)
             } catch (e: Exception) {
-                _state.value = _state.value.copy(error = e.message ?: "Unknown error", isLoading = false)
+                _state.value = _state.value.copy(error = e.message ?: Constans.UNKNOWN_ERROR, isLoading = false)
             }
         }
     }

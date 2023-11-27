@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pruebatecnicabolsiyo.core.model.Routes.*
+import com.example.pruebatecnicabolsiyo.domain.Constans
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +34,7 @@ fun TopAppBarScreen(apiViewModel: ApiViewModel, navController: NavHostController
         topBar = {
             TopAppBar(colors = TopAppBarDefaults.mediumTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primary
-            ), title = { Text(text = "Api Rick and Morty", color = Color.White) }, actions = {
+            ), title = { Text(text = Constans.NAME_APP, color = Color.White) }, actions = {
                 IconButton(onClick = { activity.finish() }) {
                     Icon(
                         imageVector = Icons.Filled.Close,
