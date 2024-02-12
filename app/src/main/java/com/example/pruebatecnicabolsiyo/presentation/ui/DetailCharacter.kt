@@ -33,9 +33,10 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.pruebatecnicabolsiyo.core.model.Routes
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
+import com.example.pruebatecnicabolsiyo.presentation.viewmodel.DatabaseViewModel
 
 @Composable
-fun ViewDetailsCharacter(apiViewModel: ApiViewModel, navController: NavHostController, id: Int) {
+fun ViewDetailsCharacter(databaseViewModel: DatabaseViewModel,apiViewModel: ApiViewModel, navController: NavHostController, id: Int) {
     val charactersStates by apiViewModel.state.collectAsState()
 
     Column(

@@ -1,4 +1,4 @@
-package com.example.pruebatecnicabolsiyo.domain
+package com.example.pruebatecnicabolsiyo.domain.usecase.api
 
 import com.example.pruebatecnicabolsiyo.core.ApiRepository
 import com.example.pruebatecnicabolsiyo.core.model.Characters

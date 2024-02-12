@@ -15,11 +15,13 @@ import com.example.pruebatecnicabolsiyo.presentation.ui.TopAppBarScreen
 import com.example.pruebatecnicabolsiyo.presentation.ui.ViewDetailsCharacter
 import com.example.pruebatecnicabolsiyo.presentation.ui.theme.PruebaTecnicaBolsiyoTheme
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
+import com.example.pruebatecnicabolsiyo.presentation.viewmodel.DatabaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val apiViewModel:ApiViewModel by viewModels()
+    private val databaseViewModel:DatabaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +30,13 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = Routes.Pantalla1.routes) {
                     composable(Routes.Pantalla1.routes) {
-                        TopAppBarScreen(apiViewModel = apiViewModel, navController = navController)
+                        TopAppBarScreen(databaseViewModel= databaseViewModel, apiViewModel = apiViewModel, navController = navController)
                     }
                     composable(
                         Routes.Pantalla2.routes,
                         arguments = listOf(navArgument(Constans.ID) { type = NavType.IntType })
                     ) {backStackEntry ->
-                        ViewDetailsCharacter(apiViewModel = apiViewModel, navController,backStackEntry.arguments?.getInt(Constans.ID) ?: 0)
+                        ViewDetailsCharacter(databaseViewModel= databaseViewModel,apiViewModel = apiViewModel, navController,backStackEntry.arguments?.getInt(Constans.ID) ?: 0)
                     }
                 }
             }

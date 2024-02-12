@@ -1,5 +1,8 @@
 package com.example.pruebatecnicabolsiyo.core.model
 
+import com.example.pruebatecnicabolsiyo.core.database.entity.CharactersAttributesEntity
+import com.example.pruebatecnicabolsiyo.core.database.entity.CharactersFromApiEntity
+
 data class CharactersAttributes(
     val id: Int,
     val name: String,
@@ -14,3 +17,5 @@ data class CharactersAttributes(
     val url: String,
     val created: String
 )
+fun CharactersAttributes.toDomainChaAttEntity() = CharactersAttributesEntity(id,name, status ,species,type,gender,image,url, created)
+fun CharactersAttributes.toDomainChaAttFromApi() = CharactersFromApiEntity(id,name, status ,species,type,gender,image,url, created,save = false)

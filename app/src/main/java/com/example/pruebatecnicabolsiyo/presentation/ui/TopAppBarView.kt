@@ -24,11 +24,12 @@ import androidx.navigation.NavHostController
 import com.example.pruebatecnicabolsiyo.core.model.Routes.*
 import com.example.pruebatecnicabolsiyo.domain.Constans
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
+import com.example.pruebatecnicabolsiyo.presentation.viewmodel.DatabaseViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TopAppBarScreen(apiViewModel: ApiViewModel, navController: NavHostController) {
+fun TopAppBarScreen(databaseViewModel: DatabaseViewModel, apiViewModel: ApiViewModel, navController: NavHostController) {
     val activity = LocalContext.current as Activity
     Scaffold(
         topBar = {
@@ -53,7 +54,7 @@ fun TopAppBarScreen(apiViewModel: ApiViewModel, navController: NavHostController
                 .padding(innerPadding)
                 .padding(bottom = 8.dp)
         ) {
-            ContentPrincipalView(apiViewModel = apiViewModel, navController)
+            ContentPrincipalView(databaseViewModel = databaseViewModel, apiViewModel = apiViewModel, navController)
         }
     }
 }
