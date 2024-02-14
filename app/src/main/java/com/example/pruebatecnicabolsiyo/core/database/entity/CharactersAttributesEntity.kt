@@ -12,9 +12,11 @@ data class CharactersAttributesEntity(
     val type: String,
     val gender: String,
     val image: String,
-//    val episode: List<String>,
     val url: String,
     val created: String,
     val save: Boolean = true
 )
+
+fun CharactersAttributesEntity.toDomainChaAttFavorite() = CharactersFromApiEntity(id,name, status ,species,type,gender,image,url, created,save)
+
 

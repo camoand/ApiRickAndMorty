@@ -9,7 +9,9 @@ object Constans {
    const val ERROR_MESSAGE = "Error al acceder al recurso"
    const val ID = "id"
    const val NEXT_PAGE = "Siguiente pagina"
-   const val PREVIOUS_PAGE = "Siguiente pagina"
+   const val LOADING_MORE = "Cargar mas"
+   const val FAVORITE = "Favoritos"
+   const val ALL_CHARACTERS = "Mostrar todos"
    const val UNKNOWN_ERROR = "Unknown error"
 
 }

@@ -31,14 +31,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.pruebatecnicabolsiyo.core.database.entity.CharactersFromApiEntity
+import com.example.pruebatecnicabolsiyo.core.database.entity.toDomainChaAttFavorite
 import com.example.pruebatecnicabolsiyo.core.model.Routes
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.DatabaseViewModel
 
 @Composable
-fun ViewDetailsCharacter(databaseViewModel: DatabaseViewModel,apiViewModel: ApiViewModel, navController: NavHostController, id: Int) {
-    val charactersStates by apiViewModel.state.collectAsState()
-
+fun ViewDetailsCharacter(
+    databaseViewModel: DatabaseViewModel,
+    apiViewModel: ApiViewModel,
+    navController: NavHostController,
+    id: Int
+) {
+    val charactersStates by databaseViewModel.stateDatabase.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,60 +69,69 @@ fun ViewDetailsCharacter(databaseViewModel: DatabaseViewModel,apiViewModel: ApiV
                 }
         )
         Spacer(modifier = Modifier.padding(5.dp))
-        Card(
-            shape = MaterialTheme.shapes.medium,
-            modifier = Modifier
-                .height(200.dp)
-                .width(160.dp)
-        ) {
-            AsyncImage(
-                model = charactersStates.character!!.results[id].image,
-                contentDescription = "photoCharacter",
-                contentScale = ContentScale.FillHeight,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-        Spacer(modifier = Modifier.padding(4.dp))
-        Text(
-            text = charactersStates.character!!.results[id].name,
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Monospace,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.padding(5.dp))
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(start = 8.dp)
-        ) {
-            TextViewDescription(
-                atribute = "Origen: ",
-                description = charactersStates.character!!.results[id].origin.name
-            )
-            TextViewDescription(
-                atribute = "Especie: ",
-                description = charactersStates.character!!.results[id].species
-            )
-            TextViewDescription(
-                atribute = "Genero: ",
-                description = charactersStates.character!!.results[id].gender
-            )
-            TextViewDescription(
-                atribute = "tipo: ",
-                description = charactersStates.character!!.results[id].type
-            )
-            TextViewDescription(
-                atribute = "locación: ",
-                description = charactersStates.character!!.results[id].location.name
-            )
-            TextViewDescription(
-                atribute = "creado: ",
-                description = charactersStates.character!!.results[id].created
-            )
+        if (!charactersStates.isGetInDatabaseFavorite) {
+            CardCharacter(charactersStates.characterGetDatabase!!, id)
+        }else {
+            val character = charactersStates.characterGetDatabaseFavorite!!
+            CardCharacter(character.map { it.toDomainChaAttFavorite() } , id = id )
         }
     }
 
+}
+@Composable
+fun CardCharacter(character: List<CharactersFromApiEntity>, id: Int) {
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier
+            .height(200.dp)
+            .width(160.dp)
+    ) {
+        AsyncImage(
+            model = character[id].image,
+            contentDescription = "photoCharacter",
+            contentScale = ContentScale.FillHeight,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+    Spacer(modifier = Modifier.padding(4.dp))
+    Text(
+        text = character[id].name,
+        fontSize = 30.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.Monospace,
+        textAlign = TextAlign.Center
+    )
+    Spacer(modifier = Modifier.padding(5.dp))
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp)
+    ) {
+        /* TextViewDescription(
+             atribute = "Origen: ",
+             description = charactersStates.character!!.results[id].origin.name
+         )*/
+        TextViewDescription(
+            atribute = "Especie: ",
+            description = character[id].species
+        )
+        TextViewDescription(
+            atribute = "Genero: ",
+            description = character[id].gender
+        )
+        TextViewDescription(
+            atribute = "tipo: ",
+            description = character[id].type
+        )
+        /* TextViewDescription(
+             atribute = "locación: ",
+             description = charactersStates.character!!.results[id].location.name
+         )*/
+        TextViewDescription(
+            atribute = "creado: ",
+            description = character[id].created
+        )
+    }
 }
 
 @Composable

@@ -29,7 +29,11 @@ import com.example.pruebatecnicabolsiyo.presentation.viewmodel.DatabaseViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun TopAppBarScreen(databaseViewModel: DatabaseViewModel, apiViewModel: ApiViewModel, navController: NavHostController) {
+fun TopAppBarScreen(
+    databaseViewModel: DatabaseViewModel,
+    apiViewModel: ApiViewModel,
+    navController: NavHostController
+) {
     val activity = LocalContext.current as Activity
     Scaffold(
         topBar = {
@@ -45,8 +49,7 @@ fun TopAppBarScreen(databaseViewModel: DatabaseViewModel, apiViewModel: ApiViewM
                 }
             })
         }, bottomBar = {
-
-            NavigationBar(apiViewModel = apiViewModel)
+            NavigationBar(databaseViewModel = databaseViewModel, apiViewModel = apiViewModel)
         }) { innerPadding ->
         Box(
             Modifier
@@ -54,7 +57,11 @@ fun TopAppBarScreen(databaseViewModel: DatabaseViewModel, apiViewModel: ApiViewM
                 .padding(innerPadding)
                 .padding(bottom = 8.dp)
         ) {
-            ContentPrincipalView(databaseViewModel = databaseViewModel, apiViewModel = apiViewModel, navController)
+            ContentPrincipalView(
+                databaseViewModel = databaseViewModel,
+                apiViewModel = apiViewModel,
+                navController,
+            )
         }
     }
 }

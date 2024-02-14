@@ -23,6 +23,9 @@ class DatabaseRepository @Inject constructor(
     fun setDatabaseCharacters(charactersAttributesEntity: List<CharactersAttributesEntity>) {
         return charactersAttributesDAO.addCharacterFav(charactersAttributesEntity)
     }
+    fun getDatabaseCharactersFavorite(): List <CharactersAttributesEntity> {
+        return charactersAttributesDAO.getAllCharactersFav()
+    }
     fun deleteDatabaseCharacter(idCharacter: Int): Int {
         return charactersAttributesDAO.deleteCharacterFav(idCharacter)
     }

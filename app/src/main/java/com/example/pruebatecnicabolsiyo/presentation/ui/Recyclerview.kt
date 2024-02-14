@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,11 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.pruebatecnicabolsiyo.core.database.entity.CharactersFromApiEntity
+import com.example.pruebatecnicabolsiyo.core.database.entity.toDomainChaAttFavorite
 import com.example.pruebatecnicabolsiyo.core.model.Routes
 import com.example.pruebatecnicabolsiyo.domain.state.DatabaseState
 import com.example.pruebatecnicabolsiyo.presentation.intent.CharacterIntent
@@ -62,33 +66,52 @@ fun ContentPrincipalView(
             CircularProgressIndicator(Modifier.size(50.dp))
         }
     } else if (charactersStates.character != null) {
-
-        for (i in charactersStates.character!!.results.indices)
-            databaseViewModel.processIntent(CharacterIntent.SaveDatabase(charactersStates.character!!.results[i]))
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(8.dp),
-            verticalArrangement = Arrangement.Center,
+        if (!charactersDatabaseStates.isGetInDatabaseFavorite)
+            for (i in charactersStates.character!!.results.indices)
+                databaseViewModel.processIntent(CharacterIntent.SaveDatabase(charactersStates.character!!.results[i]))
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .semantics { isTraversalGroup = true }
         ) {
-            LazyVerticalGrid(columns = GridCells.Adaptive(120.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
 
-                content = {
-                    databaseViewModel.processIntent(CharacterIntent.ReadDatabase)
-                    if (charactersDatabaseStates.isGetInDatabase)
-                        items(charactersDatabaseStates.characterGetDatabase!!.size) { /*index, item ->*/
-                            ItemCharacter(
-                                charactersDatabaseStates.characterGetDatabase!![it],
-                                it,
-                                navController,
-                                apiViewModel,
-                                databaseViewModel,
-                                charactersDatabaseStates
-                            )
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 80.dp)
+                    .padding(8.dp)
+            ) {
+                LazyVerticalGrid(columns = GridCells.Adaptive(120.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+
+                    content = {
+                        if (!charactersDatabaseStates.isGetInDatabaseFavorite)
+                            databaseViewModel.processIntent(CharacterIntent.ReadDatabase)
+                        if (charactersDatabaseStates.isGetInDatabase) {
+                            items(charactersDatabaseStates.characterGetDatabase!!.size) {
+                                ItemCharacter(
+                                    charactersDatabaseStates.characterGetDatabase!![it],
+                                    it,
+                                    navController,
+                                    apiViewModel,
+                                    databaseViewModel,
+                                    charactersDatabaseStates
+                                )
+                            }
+                        } else if (charactersDatabaseStates.isGetInDatabaseFavorite) {
+                            items(charactersDatabaseStates.characterGetDatabaseFavorite!!.size) {
+                                ItemCharacter(
+                                    charactersDatabaseStates.characterGetDatabaseFavorite!!.map { it.toDomainChaAttFavorite() }[it],
+                                    it,
+                                    navController,
+                                    apiViewModel,
+                                    databaseViewModel,
+                                    charactersDatabaseStates
+                                )
+                            }
                         }
-                })
+                    })
+            }
         }
 
     } else {
@@ -133,6 +156,7 @@ fun ItemCharacter(
         Box {
             Card(shape = MaterialTheme.shapes.medium, modifier = Modifier
                 .clickable {
+                    //if (!charactersDatabaseStates.isGetInDatabaseFavorite) {
                     navController.navigate(Routes.Pantalla2.createRoute(position)) {
                         popUpTo(
                             Routes.Pantalla2.createRoute(
@@ -142,6 +166,7 @@ fun ItemCharacter(
                             inclusive = false
                         }
                     }
+
                 }
                 .height(200.dp)
                 .width(200.dp)) {
@@ -155,14 +180,26 @@ fun ItemCharacter(
             Box(modifier = Modifier
                 .height(40.dp)
                 .width(30.dp)
-                .pointerInput(Unit){
+                .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = {
-                            databaseViewModel.processIntent(CharacterIntent.FavCharacter(charactersAttributes))
+                            if (!charactersDatabaseStates.isGetInDatabaseFavorite) {
+                                databaseViewModel.processIntent(
+                                    CharacterIntent.FavCharacter(
+                                        charactersAttributes
+                                    )
+                                )
+                            } else {
+                                databaseViewModel.processIntent(
+                                    CharacterIntent.noFavCharacter(
+                                        charactersAttributes
+                                    )
+                                )
+                            }
                         }
                     )
                 }
-                ) {
+            ) {
                 if (charactersAttributes.save) {
                     // if (charactersDatabaseStates.isCreateDatabase)
                     //apiViewModel.processIntent(CharacterIntent.ReadDatabase(charactersAttributes))

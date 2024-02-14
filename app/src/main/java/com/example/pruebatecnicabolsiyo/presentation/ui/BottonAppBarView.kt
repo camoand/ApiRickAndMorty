@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,23 +18,26 @@ import androidx.compose.ui.unit.dp
 import com.example.pruebatecnicabolsiyo.domain.Constans
 import com.example.pruebatecnicabolsiyo.presentation.intent.CharacterIntent
 import com.example.pruebatecnicabolsiyo.presentation.viewmodel.ApiViewModel
+import com.example.pruebatecnicabolsiyo.presentation.viewmodel.DatabaseViewModel
 
 
 @Composable
-fun NavigationBar(apiViewModel: ApiViewModel) {
+fun NavigationBar(databaseViewModel: DatabaseViewModel, apiViewModel: ApiViewModel) {
     val characterState by apiViewModel.state.collectAsState()
-    var enableButtonNext = false
-    var enableButtonAfter = false
+    val charactersDatabaseStates by databaseViewModel.stateDatabase.collectAsState()
+
+    /*    var enableButtonNext = false
+        var enableButtonAfter = false*/
 
 
-    with(characterState.character) {
-        if (this != null) {
-            if (this.info.next != null)
-                enableButtonNext = true
-            if (this.info.prev != null)
-                enableButtonAfter = true
-        }
-    }
+    /* with(characterState.character) {
+         if (this != null) {
+             if (this.info.next != null)
+                 enableButtonNext = true
+             if (this.info.prev != null)
+                 enableButtonAfter = true
+         }
+     }*/
 
     Box {
         Row(
@@ -49,29 +48,28 @@ fun NavigationBar(apiViewModel: ApiViewModel) {
         ) {
             IconButton(
                 onClick = {
-                    apiViewModel.processIntent(
-                        CharacterIntent.NavigateToNextPage(
-                            characterState.character?.info?.prev ?: ""
-                        )
-                    )
+                    if (!charactersDatabaseStates.isGetInDatabaseFavorite)
+                        databaseViewModel.processIntent(CharacterIntent.ReadDatabaseFavotite)
+                    else
+                        databaseViewModel.processIntent(CharacterIntent.ReadDatabase)
+
                 },
                 Modifier
                     .fillMaxWidth(0.5f)
                     .fillMaxHeight()
                     .background(Color.Cyan),
-                enabled = enableButtonAfter
+                //  enabled = enableButtonAfter
             ) {
-                Row {
-                    Icon(
-                        imageVector = Icons.Filled.KeyboardArrowLeft,
-                        contentDescription = "icon_previous",
-                        tint = Color.Black
-                    )
+                if (!charactersDatabaseStates.isGetInDatabaseFavorite) {
                     Text(
-                        text = Constans.PREVIOUS_PAGE, modifier = Modifier
+                        text = Constans.FAVORITE, modifier = Modifier
                             .align(Alignment.CenterVertically)
                     )
-                }
+                } else
+                    Text(
+                        text = Constans.ALL_CHARACTERS, modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                    )
             }
             IconButton(
                 onClick = {
@@ -84,18 +82,12 @@ fun NavigationBar(apiViewModel: ApiViewModel) {
                 Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .background(Color.Cyan),
-                enabled = enableButtonNext
+                    .background(Color.Cyan)
             ) {
                 Row {
                     Text(
-                        text = Constans.NEXT_PAGE, modifier = Modifier
+                        text = Constans.LOADING_MORE, modifier = Modifier
                             .align(Alignment.CenterVertically)
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.KeyboardArrowRight,
-                        contentDescription = "icon_next",
-                        tint = Color.Black
                     )
                 }
             }

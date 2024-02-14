@@ -12,10 +12,9 @@ import com.example.pruebatecnicabolsiyo.domain.state.DatabaseState
 import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseDeleteCharacter
 import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseGetCharacter
 import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseGetCharacters
+import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseGetFavorite
 import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseInsertCharacter
 import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseInsertFromApi
-import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseInsertLocation
-import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseInsertOrigin
 import com.example.pruebatecnicabolsiyo.domain.usecase.database.DbUseCaseUpdateFromApi
 import com.example.pruebatecnicabolsiyo.presentation.intent.CharacterIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +28,7 @@ import javax.inject.Inject
 class DatabaseViewModel @Inject constructor(
     private val insertAttributesDatabase: DbUseCaseInsertCharacter,
     private val getAttributesDatabase: DbUseCaseGetCharacter,
+    private val getDatabaseFavorite: DbUseCaseGetFavorite,
     private val getAttributeDatabaseFromApi: DbUseCaseGetCharacters,
     private val insertFromApi: DbUseCaseInsertFromApi,
     private val deleteCharacter: DbUseCaseDeleteCharacter,
@@ -41,7 +41,9 @@ class DatabaseViewModel @Inject constructor(
         when (intent) {
             is CharacterIntent.FavCharacter -> saveCharacterFav(intent.charactersFav)
             is CharacterIntent.ReadDatabase -> readInDatabase()
+            is CharacterIntent.ReadDatabaseFavotite -> readInDatabaseFavorite()
             is CharacterIntent.SaveDatabase -> saveDatabase(intent.charactersAttributes)
+            is CharacterIntent.noFavCharacter -> deleteCharacterFav(intent.charactersFav)
             else -> {}
         }
 
@@ -65,14 +67,14 @@ class DatabaseViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val getCharacter = getAttributesDatabase.invoke(charactersFromApiEntity.id)
             val response: List<CharactersFromApiEntity> = listOf(charactersFromApiEntity)
-            if (getCharacter.isNotEmpty()){
+            if (getCharacter.isNotEmpty()) {
                 updateFromApi.invoke(response.map { it.toDomainChaAttDelete() })
                 deleteCharacter.invoke(charactersFromApiEntity.id)
                 val consult = getAttributeDatabaseFromApi.invoke()
                 _stateDatabase.value = _stateDatabase.value.copy(
                     characterGetDatabase = consult
                 )
-            }else{
+            } else {
                 insertAttributesDatabase.invoke(response.map { it.toDomainChaAttEntity() })
                 updateFromApi.invoke(response.map { it.toDomainChaAttEntityFA() })
                 val consult = getAttributeDatabaseFromApi.invoke()
@@ -85,6 +87,20 @@ class DatabaseViewModel @Inject constructor(
         }
     }
 
+
+    private fun deleteCharacterFav(charactersFav: CharactersFromApiEntity) {
+        val response: List<CharactersFromApiEntity> = listOf(charactersFav)
+        viewModelScope.launch(Dispatchers.IO) {
+           // insertAttributesDatabase.invoke(response.map { it.toDomainChaAttEntity() })
+            updateFromApi.invoke(response.map { it.toDomainChaAttDelete()})
+            deleteCharacter.invoke(charactersFav.id)
+            val consult = getDatabaseFavorite.invoke()
+            _stateDatabase.value = _stateDatabase.value.copy(
+                characterGetDatabaseFavorite = consult
+            )
+        }
+    }
+
     private fun readInDatabase() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -92,15 +108,32 @@ class DatabaseViewModel @Inject constructor(
                 if (response.isNotEmpty()) {
                     _stateDatabase.value = _stateDatabase.value.copy(
                         isGetInDatabase = true,
+                        isGetInDatabaseFavorite = false,
                         characterGetDatabase = response
                     )
                 }
             } catch (e: Exception) {
                 _stateDatabase.value = _stateDatabase.value.copy(isGetInDatabase = false)
             }
-
         }
-
     }
+
+    private fun readInDatabaseFavorite() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = getDatabaseFavorite.invoke()
+                if (response.isNotEmpty()) {
+                    _stateDatabase.value = _stateDatabase.value.copy(
+                        isGetInDatabase = false,
+                        isGetInDatabaseFavorite = true,
+                        characterGetDatabaseFavorite = response
+                    )
+                }
+            } catch (e: Exception) {
+                _stateDatabase.value = _stateDatabase.value.copy(isGetInDatabaseFavorite = false)
+            }
+        }
+    }
+
 }
 
