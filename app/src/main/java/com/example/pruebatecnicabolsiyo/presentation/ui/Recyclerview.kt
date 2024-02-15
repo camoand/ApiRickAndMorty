@@ -77,7 +77,6 @@ fun ContentPrincipalView(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 80.dp)
                     .padding(8.dp)
             ) {
                 LazyVerticalGrid(columns = GridCells.Adaptive(120.dp),
