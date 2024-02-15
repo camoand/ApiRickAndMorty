@@ -66,7 +66,11 @@ fun TopAppBarScreen(
                     searchViewModel.updateSearchTextState(newValue = "")
                     searchViewModel.updateSearchWidgetState(newValue = SearchWidgetState.CLOSE)
                 },
-                onSearchClicked = {},
+                onSearchClicked = {
+                    apiViewModel.searchCharacter(it)
+                    searchViewModel.updateSearchTextState(newValue = "")
+                    searchViewModel.updateSearchWidgetState(newValue = SearchWidgetState.CLOSE)
+                                  },
                 onSearchTriggered = {
                     searchViewModel.updateSearchWidgetState(newValue = SearchWidgetState.OPENED)
                 }

@@ -12,4 +12,8 @@ class ApiRepository @Inject constructor(private val api : GetServiceApi) {
         return api.getApiNextPage(nextPage)
     }
 
+    suspend fun getApiSearch(search:String): Characters{
+        return api.getApiSearchCharacter(search)
+    }
+
 }

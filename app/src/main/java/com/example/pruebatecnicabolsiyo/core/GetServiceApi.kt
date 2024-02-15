@@ -11,13 +11,20 @@ class GetServiceApi @Inject constructor(private val apiService: ApiService) {
     suspend fun getApi(): Characters {
         return withContext(Dispatchers.IO){
             val response = apiService.getCharacters()
-            response ;
+            response
         }
     }
     suspend fun getApiNextPage(nextPage: String): Characters {
         return withContext(Dispatchers.IO){
             val response = apiService.getCharactersChangePage(nextPage)
-            response ;
+            response
+        }
+    }
+
+    suspend fun getApiSearchCharacter(search: String): Characters{
+        return withContext(Dispatchers.IO){
+            val response = apiService.getSearchCharacter(search)
+            response
         }
     }
 }

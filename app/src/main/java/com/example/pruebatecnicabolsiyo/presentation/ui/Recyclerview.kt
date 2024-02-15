@@ -92,7 +92,6 @@ fun ContentPrincipalView(
                                     charactersDatabaseStates.characterGetDatabase!![it],
                                     it,
                                     navController,
-                                    apiViewModel,
                                     databaseViewModel,
                                     charactersDatabaseStates
                                 )
@@ -103,7 +102,6 @@ fun ContentPrincipalView(
                                     charactersDatabaseStates.characterGetDatabaseFavorite!!.map { it.toDomainChaAttFavorite() }[it],
                                     it,
                                     navController,
-                                    apiViewModel,
                                     databaseViewModel,
                                     charactersDatabaseStates
                                 )
@@ -147,7 +145,6 @@ fun ItemCharacter(
     charactersAttributes: CharactersFromApiEntity,
     position: Int,
     navController: NavHostController,
-    apiViewModel: ApiViewModel,
     databaseViewModel: DatabaseViewModel,
     charactersDatabaseStates: DatabaseState
 ) {
